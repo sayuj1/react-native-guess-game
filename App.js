@@ -12,6 +12,7 @@ export default function App() {
   const [appReady, setAppReady] = useState(false);
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [guessRounds, setGuessRounds] = useState(0);
 
   useEffect(() => {
     async function loadFonts() {
@@ -43,6 +44,12 @@ export default function App() {
 
   function gameOverHandler(numberOfRounds) {
     setGameIsOver(true);
+    setGuessRounds(numberOfRounds);
+  }
+
+  function startNewGameHandler() {
+    setUserNumber(null);
+    setGuessRounds(0);
   }
 
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
@@ -54,7 +61,13 @@ export default function App() {
   }
 
   if (gameIsOver && userNumber) {
-    screen = <GameOverScreen />;
+    screen = (
+      <GameOverScreen
+        userNumber={userNumber}
+        onStartNewGame={startNewGameHandler}
+        roundsNumber={guessRounds}
+      />
+    );
   }
 
   return (
